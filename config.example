@@ -1,0 +1,10 @@
+# pebble-sync config. install.sh copies this to ~/.config/pebble-sync/config.
+
+# Worker URL printed by `wrangler deploy`.
+PEBBLE_URL="https://pebble-notes.<your-subdomain>.workers.dev"
+
+# PEBBLE_TOKEN is deliberately not set here so this file is safe to commit.
+# Export it from your environment instead (e.g. ~/.env.secrets).
+
+# Full path of the file notes are appended to. Use $HOME rather than ~ here.
+NOTES_FILE="$HOME/notes.txt"

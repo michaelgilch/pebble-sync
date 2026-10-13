@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 # Pull notes added since the last run from the Worker and append them to a local file.
-#   PEBBLE_URL    Worker URL, e.g. https://pebble-notes.you.workers.dev (required)
-#   PEBBLE_TOKEN  same secret given to `wrangler secret put AUTH_TOKEN` (required)
-#   NOTES_FILE    local output (default ~/notes.txt)
+# Settings come from ~/.config/pebble-sync/config (created by install.sh).
+# PEBBLE_TOKEN comes from the environment so the config holds no secrets.
 set -euo pipefail
 
-url=${PEBBLE_URL:?set PEBBLE_URL to your Worker URL}
-token=${PEBBLE_TOKEN:?set PEBBLE_TOKEN to your auth token}
-notes_file=${NOTES_FILE:-$HOME/notes.txt}
+config=${XDG_CONFIG_HOME:-$HOME/.config}/pebble-sync/config
+if [[ ! -r $config ]]; then
+  echo "missing config: $config (run install.sh)" >&2
+  exit 1
+fi
+# shellcheck source=/dev/null
+source "$config"
+
+url=${PEBBLE_URL:?set PEBBLE_URL in $config}
+token=${PEBBLE_TOKEN:?export PEBBLE_TOKEN in your environment}
+notes_file=${NOTES_FILE:?set NOTES_FILE in $config}
 state=${XDG_STATE_HOME:-$HOME/.local/state}/pebble-sync-last-id
 
-mkdir -p "$(dirname "$state")"
+mkdir -p "$(dirname "$state")" "$(dirname "$notes_file")"
 last=$(cat "$state" 2>/dev/null || echo 0)
 
 tmp=$(mktemp)
