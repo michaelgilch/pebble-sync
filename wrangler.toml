@@ -5,4 +5,4 @@ compatibility_date = "2026-10-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "pebble-notes"
-database_id = "REPLACE_WITH_ID_FROM_wrangler_d1_create"
+database_id = "ba132467-3952-473a-9577-2ca5db2a1db6"
